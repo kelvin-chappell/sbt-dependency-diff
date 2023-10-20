@@ -9,7 +9,7 @@ scriptedLaunchOpts += ("-Dplugin.version=" + version.value)
 scriptedBufferLog := false
 
 //addDependencyTreePlugin
-addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
+//addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
 
 enablePlugins(SbtPlugin)
 
@@ -19,6 +19,8 @@ pluginCrossBuild / sbtVersion := {
     case "2.13" => "1.2.8" // Minimum SBT version
   }
 }
+
+libraryDependencies += "net.virtual-void" % "sbt-dependency-graph" % "0.9.2"
 
 // Uncomment the following for publishing to Sonatype.
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for more detail.
