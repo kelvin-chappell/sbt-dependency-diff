@@ -1,49 +1,32 @@
 package org.kc.sbtdependencydiff
 
-import net.virtualvoid.sbt.graph.DependencyGraphKeys.dependencyList
 import sbt.*
 import sbt.Def.spaceDelimited
 import sbt.Keys.*
+import sbt.plugins.DependencyTreeKeys.dependencyList
+import sbt.plugins.{DependencyTreeKeys, DependencyTreePlugin, MiniDependencyTreePlugin}
 
 object HelloPlugin extends AutoPlugin {
 
   // By defining autoImport, the settings are automatically imported into user's `*.sbt`
-  object autoImport extends ZipKeys {
+  object autoImport extends DependencyTreeKeys {
     // Configuration points, like the built-in `version`, `libraryDependencies`, or `compile`
     val sayHello = inputKey[Unit]("Prints out a greeting.")
   }
 
-  import autoImport.*
+//  import autoImport.*
 
-  override def requires: Plugins = net.virtualvoid.sbt.graph.DependencyGraphPlugin
+  override def requires: Plugins = DependencyTreePlugin
 
   // This plugin is automatically enabled
   override def trigger: PluginTrigger = allRequirements
 
-  override lazy val projectSettings: Seq[Setting[_]] = Seq(
-    sayHello := {
-      val args: Seq[String] = spaceDelimited().parsed
-      println(s"Hello ${args.headOption.getOrElse("World")}")
-      val list = dependencyList.value
-//      println(list)
-    }
-//    sayHello := depListTask.value
-  )
+  val configurations = Vector(Compile, Test, Runtime, Default, Provided, Optional)
 
-  private def depListTask = Def.taskDyn {
+  // TODO: in plugin code, generate module graph of dependencies of current code
+  // ???
 
-    val log = sLog.value
-    val args: Seq[String] = spaceDelimited().parsed
-    log.info(s"Hello ${args.headOption.getOrElse("World")}")
-    log.info("Listing...")
-    val list = dependencyList.value
-  }
+  // TODO: in plugin code, generate module graph of dependencies of code from another ref
+  // ???
 
-  private def zipTask = Def.task {
-    val log = sLog.value
-    lazy val zip = new File(targetZipDir.value, sourceZipDir.value.getName + ".zip")
-    log.info("Zipping file...")
-    IO.zip(Path.allSubpaths(sourceZipDir.value), zip)
-    zip
-  }
 }
