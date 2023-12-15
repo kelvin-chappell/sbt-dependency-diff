@@ -1,4 +1,4 @@
-ThisBuild / version := "0.1.9-SNAPSHOT"
+ThisBuild / version := "0.1.11-SNAPSHOT"
 
 ThisBuild / organization := "org.kc"
 
