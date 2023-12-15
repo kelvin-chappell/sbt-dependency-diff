@@ -1,32 +1,44 @@
 package org.kc.sbtdependencydiff
 
-import sbt.*
-import sbt.Def.spaceDelimited
-import sbt.Keys.*
-import sbt.plugins.DependencyTreeKeys.dependencyList
-import sbt.plugins.{DependencyTreeKeys, DependencyTreePlugin, MiniDependencyTreePlugin}
+import sbt._
 
+/** This plugin is automatically enabled for all projects. It defines settings and tasks that are
+  * automatically imported to the user scope. To enable this plugin, use
+  * `enablePlugins(HelloPlugin)` in your sbt file. To disable this plugin, use
+  * `disablePlugins(HelloPlugin)` in your sbt file. To change the default behavior, use
+  * `HelloPlugin.autoImport.*` in your sbt file.
+  * @see
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Best-Practices.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Templates.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Overview.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Getting-Started.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Howto.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Community-Plugins.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Developing.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Testing.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Setup.html]]
+  *   [[http://www.scala-sbt.org/1.x/docs/Plugins-Using.html]]
+  */
 object HelloPlugin extends AutoPlugin {
+  override def trigger = allRequirements
 
-  // By defining autoImport, the settings are automatically imported into user's `*.sbt`
-  object autoImport extends DependencyTreeKeys {
-    // Configuration points, like the built-in `version`, `libraryDependencies`, or `compile`
-    val sayHello = inputKey[Unit]("Prints out a greeting.")
+  object autoImport {
+    val helloGreeting = settingKey[String]("greeting")
+    val hello = taskKey[Unit]("say hello")
   }
 
-//  import autoImport.*
+  import autoImport._
 
-  override def requires: Plugins = DependencyTreePlugin
+  override lazy val globalSettings: Seq[Setting[_]] = Seq(
+    helloGreeting := "hi"
+  )
 
-  // This plugin is automatically enabled
-  override def trigger: PluginTrigger = allRequirements
-
-  val configurations = Vector(Compile, Test, Runtime, Default, Provided, Optional)
-
-  // TODO: in plugin code, generate module graph of dependencies of current code
-  // ???
-
-  // TODO: in plugin code, generate module graph of dependencies of code from another ref
-  // ???
-
+  override lazy val projectSettings: Seq[Setting[_]] = Seq(
+    hello := {
+      val streams = Keys.streams.value
+      val greeting = helloGreeting.value
+      streams.log.info(greeting)
+    }
+  )
 }

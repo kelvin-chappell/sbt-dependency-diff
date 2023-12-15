@@ -1,9 +1,14 @@
-organization := "org.kc"
-name := "sbt-dependency-diff"
-version := "0.1.5-SNAPSHOT"
+ThisBuild / version := "0.1.6-SNAPSHOT"
 
-scalaVersion := "2.12.18"
+ThisBuild / organization := "org.kc"
 
-sbtPlugin := true
-
-libraryDependencies += "org.scala-sbt" % "sbt-dependency-tree_2.12_1.0" % sbtVersion.value
+lazy val root = (project in file("."))
+  .enablePlugins(SbtPlugin)
+  .settings(
+    name := "sbt-dependency-diff",
+    pluginCrossBuild / sbtVersion := {
+      scalaBinaryVersion.value match {
+        case "2.12" => "1.2.8" // set minimum sbt version
+      }
+    }
+  )
