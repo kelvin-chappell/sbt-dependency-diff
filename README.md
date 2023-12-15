@@ -19,3 +19,6 @@
 * https://www.scala-sbt.org/1.x/docs/Basic-Def.html#What+is+a+build+definition%3F
 * https://www.scala-sbt.org/1.x/docs/Basic-Def.html#Types
 * https://www.scala-sbt.org/1.x/docs/Plugins.html#Creating+an+auto+plugin
+* https://medium.com/@phkadam2008/write-test-your-own-scala-sbt-plugin-6701b0e36a62
+* https://www.scala-sbt.org/1.x/docs/Plugins.html
+* https://www.scala-sbt.org/1.x/docs/Plugins-Best-Practices.html
