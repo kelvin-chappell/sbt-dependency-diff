@@ -31,7 +31,7 @@ object Zip {
     logger.info(s"Source directory: $sourceDir")
     logger.info(s"Target file: $zip")
     logger.info("Zipping file...")
-    IO.zip(Path.allSubpaths(sourceDir), zip)
+    IO.zip(Path.allSubpaths(sourceDir), zip, time = None)
     zip
   }
 }

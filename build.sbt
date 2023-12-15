@@ -8,7 +8,7 @@ lazy val root = (project in file("."))
     name := "sbt-dependency-diff",
     pluginCrossBuild / sbtVersion := {
       scalaBinaryVersion.value match {
-        case "2.12" => "1.2.8" // set minimum sbt version
+        case "2.12" => "1.4.0" // set minimum sbt version
       }
     }
   )
